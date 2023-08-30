@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const PORT = process.env.PORT || 3000
 const db = require('./db/db.json')
-const util = require("util")
+
 
 
 const app = express ();
@@ -31,11 +31,28 @@ app.post('/api/notes', (req, res) =>{
     fs.writeFileSync('./db/db.json', JSON.stringify(db))
 
     res.json(db)
-    
+
 })
 
-app.get('/alien', function (req, res){
-    res.send('Welcome Back Alien')
+
+app.delete('/api/notes/:id', (req, res) => {
+    const noteIDtoDelete = req.params.id
+    const newDb = db.filter((note) => 
+    note.id !== noteIDtoDelete)
+    fs.writeFileSync('./db/db.json', JSON.stringify(newDb))
+    res.json(newDb);
+})
+
+app.get('/', function (req, res){
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+app.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'notes.html'))
+})
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
 // this is starting the server
