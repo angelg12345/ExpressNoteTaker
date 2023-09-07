@@ -62,10 +62,22 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
+
+  console.log('New Note:', newNote)
+
+  if (!newNote.title || !newNote.text) {
+    alert('Both title and text are required.');
+    return;
+  }
+
+  console.log(' saving note..'
+  )
   saveNote(newNote).then(() => {
+    console.log('note saved')
     getAndRenderNotes();
     renderActiveNote();
-  });
+  })
+
 };
 // Delete the clicked note
 const handleNoteDelete = (e) => {
@@ -144,7 +156,8 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 if (window.location.pathname === '/notes') {
-  saveNoteBtn.addEventListener('click', handleNoteSave);
+  saveNoteBtn.addEventListener('click', handleNoteSave)
+  console.log("save button clicked");
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);

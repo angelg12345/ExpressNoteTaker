@@ -1,3 +1,4 @@
+console.log('hello from index.js')
 //packages
 const express = require("express");
 const path = require("path");
@@ -6,12 +7,15 @@ const {v4: uuidv4 } = require('uuid')
 
 
 const app = express ();
-
-const PORT = process.env.PORT || 3000;
+// Setting a port for the server to run on
+const PORT = process.env.PORT || 3001;
+// file path for the database json file
 const dbFilePath = path.join(__dirname, "db", "db.json");
 
-
+// serving static files from the 'public' directory
 app.use(express.static('public'))
+
+// allowing json to server
 app.use(express.json())
 
 
@@ -28,6 +32,7 @@ app.get('/api/notes', function (req, res){
     });
 });
 
+// endpoint for adding a new note
 app.post('/api/notes', (req, res) =>{
     const newNote = req.body
 
@@ -53,7 +58,7 @@ app.post('/api/notes', (req, res) =>{
 })
 })
 
-
+// endpoint for deleting a note by id
 app.delete('/api/notes/:id', (req, res) => {
     const noteIDtoDelete = req.params.id;
 
@@ -75,16 +80,16 @@ app.delete('/api/notes/:id', (req, res) => {
 
 
 
-
+// endpoint for the main html page
 
 app.get('/', function (req, res){
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
-
+// endpoint for the notes html page
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'notes.html'))
 })
-
+// default endpoint
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
@@ -92,4 +97,5 @@ app.get('*', (req, res) => {
 // this is starting the server
 app.listen(PORT, function (){
     console.log(`Server is running on port ${PORT}`)
+ 
 });
